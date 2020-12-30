@@ -484,14 +484,12 @@ public class MyAI extends Agent
 		{
 			sameYpath.pop();
 			this.headingBack(this.currentDir);
-			//System.out.println("**********headingHome ends**********");
 			return Action.FORWARD;
 		}
 		else
 		{
 			Action nextTurn = this.decideTurnAction(goalDir);
 			this.turnDirection(nextTurn);
-			//System.out.println("**********headingHome ends**********");
 			return nextTurn;
 		}
     }
@@ -623,7 +621,6 @@ public class MyAI extends Agent
     	if (possibleX.contains(x)) {return y == this.current.y;}
     	if (possibleY.contains(y)) {return x == this.current.x;}
     	return false;
-    	//return possibleX.contains(x) && possibleY.contains(y);
     }
     
     public Action diagonalAction()
@@ -739,7 +736,6 @@ public class MyAI extends Agent
     				{
     					return false;
     				}
-    				//return false;
     			}
     		}
     	}
@@ -781,22 +777,19 @@ public class MyAI extends Agent
     	int y = this.current.y;
    		if (x == 1 && y == 0)
    		{
-   			if (stench) {/*System.out.println("another's status: "+this.matrix.get(0).get(1).status);System.out.println("^^^^^^^^^^anotherAlsoDanger ends^^^^^^^^^^");*/return this.matrix.get(0).get(1).status.contains("stench");}
-   			if (breeze) {/*System.out.println("another's status: "+this.matrix.get(0).get(1).status);System.out.println("^^^^^^^^^^anotherAlsoDanger ends^^^^^^^^^^");*/return this.matrix.get(0).get(1).status.contains("breeze");}
+   			if (stench) {return this.matrix.get(0).get(1).status.contains("stench");}
+   			if (breeze) {return this.matrix.get(0).get(1).status.contains("breeze");}
    		}
    		else if (x == 0 && y == 1)
    		{
-		   	if (stench) {/*System.out.println("another's status: "+this.matrix.get(1).get(0).status);System.out.println("^^^^^^^^^^anotherAlsoDanger ends^^^^^^^^^^");*/return this.matrix.get(1).get(0).status.contains("stench");}
-   			if (breeze) {/*System.out.println("another's status: "+this.matrix.get(1).get(0).status);System.out.println("^^^^^^^^^^anotherAlsoDanger ends^^^^^^^^^^");*/return this.matrix.get(1).get(0).status.contains("breeze");}	
+		   	if (stench) {return this.matrix.get(1).get(0).status.contains("stench");}
+   			if (breeze) {return this.matrix.get(1).get(0).status.contains("breeze");}
    		}
-   		//System.out.println("^^^^^^^^^^anotherAlsoDanger ends^^^^^^^^^^");
    		return false;
     }
 
     public Action dealWithShoot()
 	{
-    	//System.out.println("beginning at dealWithShoot, shooting now is: "+this.shooting);
-    	//System.out.println("inside dealWithShoot: very beginning: wumpusCell: "+this.wumpusCell.x+" "+this.wumpusCell.y);
 		Direction toTurn = null;
 		if (this.current.x == this.wumpusCell.x)
 		{
@@ -808,20 +801,13 @@ public class MyAI extends Agent
 			if (this.current.x < this.wumpusCell.x) {toTurn = Direction.RIGHT;}
 			else {toTurn = Direction.LEFT;}
 		}
-		//System.out.println("wumpusCell direction: "+toTurn);
-		//System.out.println("current Dir: "+this.currentDir);
 		if (this.currentDir == toTurn)
 		{
-			//this.shooting = false;
-			//System.out.println("ready to shoot, shooting now is: "+this.shooting);
-			//System.out.println("shootCount now: "+this.shootCount+"... AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!!!");
 			this.shooting = false;
-			//System.out.println("right before shoot, shooting now is: "+this.shooting);
 			this.wumpusCell = new Pair(this.width, this.length);
 			this.score += 1;
 			this.shootCount += 1;
 			return Action.SHOOT;
-			//return this.shoot();
 		}
 		else
 		{
@@ -833,41 +819,18 @@ public class MyAI extends Agent
 		}
 	}
 
-    /*public Action shoot()
-    {
-    	for (int x = 0; x < this.width; ++x)
-    	{
-    		for (int y = 0; y < this.length; ++y)
-    		{
-    			if (this.hasSuchStatus(new Pair(x,y), "wumpus"))
-    			{
-    				this.matrix.get(x).get(y).status.remove("wumpus");
-    			}
-    			if (this.hasSuchStatus(new Pair(x,y), "stench"))
-    			{
-    				this.matrix.get(x).get(y).status.remove("stench");
-    			}
-    		}
-    	}
-    	return Action.SHOOT;
-    }*/
-
     public Action nextToClimb()
     {
-    	//System.out.println("^^^^^^^^^^inside nextToClimb^^^^^^^^^^");
-    	//System.out.println("this.current: "+this.current.x+" "+this.current.y);
     	Direction finalDir = this.decideDir(new Pair(0, 0));
     	if (this.currentDir == finalDir)
     	{
     		this.headingBack(this.currentDir);
-    		//System.out.println("^^^^^^^^^^nextToClimb ends^^^^^^^^^^");
     		return Action.FORWARD;
     	}
     	else
     	{
     		Action turnAction = decideTurnAction(finalDir);
     		this.turnDirection(turnAction);
-    		//System.out.println("^^^^^^^^^^nextToClimb ends^^^^^^^^^^");
     		return turnAction;
     	}
     }
@@ -970,48 +933,15 @@ public class MyAI extends Agent
 			}
 			this.length += Htoadd;
 		}
-		
-		//for (int w = 0; w < x+1-this.width;)
-		/*if (x >= this.width) 
-		{
-			for (int w = 0; w < x+1-this.width; ++x)
-			{
-				ArrayList<node> innerList = new ArrayList<node>();
-				for (int l = 0; l < this.length; ++l) 
-				{
-					innerList.add(new node(false, new HashSet<String>(), 1));
-				}
-				this.matrix.add(innerList);
-			}
-			this.width = x+1;
-		}
-		if (y >= length)
-		{
-			for (int i = 0; i < this.width; ++i)
-			{
-				for (int l = 0; l < y+1-this.length; ++l)
-				{
-					this.matrix.get(i).add(new node(false, new HashSet<String>(), 1));
-				}
-			}
-			this.length = y+1;
-		}*/
 	}
 
 	public void markNode(int x, int y, ArrayList<String> newStatus, int cost)
 	{
-		//System.out.println("**********inside markNode**********");
-		//System.out.println(newStatus);
-		//System.out.println("to mark: "+x+" "+y);
 		for (int i = 0; i < newStatus.size(); ++i) 
 		{
-			//System.out.println("here works... before adding "+i);
-			//System.out.println("status before adding..."+this.matrix.get(x).get(y).status);
 			this.matrix.get(x).get(y).status.add(newStatus.get(i));
-			//System.out.println("here works... after adding "+i);
 		}
-		this.matrix.get(x).get(y).cost = cost;	
-		//System.out.println("**********markNode ends**********");
+		this.matrix.get(x).get(y).cost = cost;
 	}
 
 	public void ifWumpusFound()
@@ -1034,14 +964,6 @@ public class MyAI extends Agent
 		{
 			for (int y = 0; y < this.length; ++y)
 			{
-				/*if (this.matrix.get(x).get(y).visited == true )
-				{
-					if (this.hasSuchStatus(new Pair(x, y), "pit"))
-					{
-						System.out.println("captyred a overinferred pit!!!!!!!!!!!!!!!!!");
-						this.matrix.get(x).get(y).status.remove("pit");
-					}
-				}*/
 				ArrayList<Pair> around = this.getAround(x, y);
 				if (this.noSuchStatus(x,y,"breeze") && this.noSuchStatus(x,y,"stench") && this.matrix.get(x).get(y).visited == true)
 				{
@@ -1074,7 +996,6 @@ public class MyAI extends Agent
 				{
 					if (this.mostAreSafe(x, y, around))
 					{
-						//System.out.println("ok now most are safe...");
 						Pair dangerCell = this.inferredDangerCell(around);
 						if (!this.outOfBound(dangerCell))
 						{
@@ -1098,18 +1019,8 @@ public class MyAI extends Agent
 						{
 							ArrayList newStatus = new ArrayList();newStatus.add("wumpus");this.markNode(inferredWumpus.x,inferredWumpus.y,newStatus,1000);
 						}
-						/*if (this.checkCellOverEdge(x,y,edge,"wumpus"))
-						{
-							ArrayList newStatus = new ArrayList();newStatus.add("safe");this.markNode(x,y,newStatus,1);
-						}
-						else
-						{
-							ArrayList newStatus = new ArrayList();newStatus.add("wumpus");this.markNode(x,y,newStatus,1000);
-						}*/
 					}
 				}
-				//System.out.println("cell 2, 3: "+this.matrix.get(2).get(3).status);
-				//System.out.println(this.matrix.get(x).get(y).visited);
 				if (this.hasSuchStatus(new Pair(x, y), "pit") && this.visitedCell.contains(new Pair(x, y)))
 				{
 					this.matrix.get(x).get(y).status.remove("pit");
@@ -1121,7 +1032,6 @@ public class MyAI extends Agent
 				{
 					ArrayList newStatus = new ArrayList();newStatus.add("pit");this.markNode(x,y,newStatus,1000);
 				}
-				//if (this.matrix.get(x).get(y).visited && this.)
 			}
 		}
 	}
@@ -1130,8 +1040,6 @@ public class MyAI extends Agent
 	{
 		for (int i = 0; i < around.size(); ++i)
 		{
-			//int x = around.get(i).x;
-			//int y = around.get(i).y;
 			if (!this.hasSuchStatus(around.get(i), "pit"))
 			{return false;}
 		}
@@ -1146,7 +1054,6 @@ public class MyAI extends Agent
 			{
 				if (this.matrix.get(x).get(y).status.contains("wumpus"))
 				{
-					//System.out.println("wumpus cell ["+x+", "+y+"]");
 					return new Pair(x, y);
 				}
 			}
@@ -1168,22 +1075,17 @@ public class MyAI extends Agent
 	
 	public boolean mostAreSafe(int x, int y, ArrayList<Pair> around)
 	{
-		//System.out.println("**********inside mostAreSafe**********");
-		//System.out.println("cell to decide: ["+x+", "+y+"] ...");
 		int safeCount = 0;
 		for (int i = 0; i < around.size(); ++i)
 		{
 			int m = around.get(i).x;
 			int n = around.get(i).y;
-			//System.out.println("status of ["+m+", "+n+"]"+this.matrix.get(m).get(n).status);
 			if (this.isSafe(m,n))
 			{
 				safeCount += 1;
 			}
 		}
-		//System.out.print("safeCount: "+safeCount);
-		if (safeCount == around.size()-1){/*System.out.println("**********mostAreSafe ends**********");*/return true;}
-		//System.out.println("**********mostAreSafe ends**********");
+		if (safeCount == around.size()-1){return true;}
 		return false;
 	}
 
@@ -1207,19 +1109,6 @@ public class MyAI extends Agent
 		}
 		return false;
 	}
-
-	/*public String EdgeThatBreeze(int x, int y)
-	{
-		Pair up = new Pair(x, y+1);
-		Pair down = new Pair(x, y-1);
-		Pair left = new Pair(x-1, y);
-		Pair right = new Pair(x+1, y);
-		if (y+1<this.length && x-1>0 && this.hasBreeze(up) && this.hasBreeze(left)) {return "UpLeft";}
-		else if (y+1<this.length && x+1<this.width && this.hasBreeze(up) && this.hasBreeze(right)) {return "UpRight";}
-		else if (y-1>0 && x-1>0 && this.hasBreeze(down) && this.hasBreeze(left)) {return "DownLeft";}
-		else if (y-1>0 && x+1<this.width && this.hasBreeze(down) && this.hasBreeze(right)) {return "DownRight";}
-		else {return "None";}
-	}*/
 
 	public String EdgeThatStench(int x, int y)
 	{
@@ -1310,26 +1199,15 @@ public class MyAI extends Agent
 
 	public ArrayList<Pair> getAround(int x, int y)
 	{
-		//System.out.println("*****inside getAround*****");
-		//System.out.println("input x y: "+x+" "+y);
 		ArrayList<Pair> around = new ArrayList<Pair>();
 		Pair left = new Pair(x-1, y);
 		Pair right = new Pair(x+1, y);
 		Pair up = new Pair(x, y+1);
 		Pair down = new Pair(x, y-1);
-		if (x-1 >= 0) {/*System.out.println("left: "+left.x+" "+left.y);*/around.add(left);}
-		if (x+1 < this.width) {/*System.out.println("right: "+right.x+" "+right.y);*/around.add(right);}
-		if (y-1 >=0) {/*System.out.println("down: "+down.x+" "+down.y);*/around.add(down);}
-		if (y+1 < this.length) {/*System.out.println("up"+up.x+" "+up.y);*/around.add(up);}
-		/*around.add(left);
-		around.add(right);
-		around.add(up);
-		around.add(down);
-		if (x-1 < 0) {around.remove(left);}
-		if (x+1 >= this.width) {around.remove(right);}	
-		if (y-1 < 0) {around.remove(down);}
-		if (y+1 >= this.length) {around.remove(up);}*/
-		//System.out.println("*****getAround ends*****"+"\n");
+		if (x-1 >= 0) {around.add(left);}
+		if (x+1 < this.width) {around.add(right);}
+		if (y-1 >=0) {around.add(down);}
+		if (y+1 < this.length) {around.add(up);}
 		return around;		
 	}
 
@@ -1337,7 +1215,6 @@ public class MyAI extends Agent
 	{
 		int x = pair.getKey();
 		int y = pair.getValue();
-		//ArrayList<String> cpyStatus = this.matrix.get(x).get(y).status.clone();
 		return this.matrix.get(x).get(y).status.contains("breeze");
 	}
 
@@ -1345,7 +1222,6 @@ public class MyAI extends Agent
 	{
 		int x = pair.getKey();
 		int y = pair.getValue();
-		//ArrayList<String> cpyStatus = this.matrix.get(x).get(y).status.clone();
 		return this.matrix.get(x).get(y).status.contains("stench");
 	}
 
@@ -1353,8 +1229,6 @@ public class MyAI extends Agent
 	{
 		int x = pair.getKey();
 		int y = pair.getValue();
-		//ArrayList<String> cpyStatus = this.matrix.get(x).get(y).status.clone();
-		//return this.matrix.get(x).get(y).status.size() == 1 && this.matrix.get(x).get(y).status.contains("breeze");
 		return this.matrix.get(x).get(y).status.contains("breeze") && !this.matrix.get(x).get(y).status.contains("stench");
 	}
 
@@ -1362,14 +1236,8 @@ public class MyAI extends Agent
 	{
 		int x = pair.getKey();
 		int y = pair.getValue();
-		//ArrayList<String> cpyStatus = this.matrix.get(x).get(y).status.clone();
 		return !this.matrix.get(x).get(y).status.contains("breeze") && this.matrix.get(x).get(y).status.contains("stench");
 	}
-
-	/*public List<String> checkNeighbor(List<Pair<Integer, Integer>> around)
-	{
-
-	}*/
 
 	public Action stepBack()
 	{
@@ -1444,16 +1312,10 @@ public class MyAI extends Agent
 		int y = anotherCell.getValue();
 		int cx = this.current.getKey();
 		int cy = this.current.getValue();
-		/*if (x == this.current.getKey()-1 && y == this.current.getValue()) {return Direction.LEFT;}
-		else if (x == this.current.getKey()+1 && y == this.current.getValue()) {return Direction.RIGHT;}
-		else if (x == this.current.getKey() && y == this.current.getValue()+1) {return Direction.UP;}
-		//else if (x == this.current.getKey()&& y == this.current.getValue()-1) {return Direction.DOWN;}
-		else{return Direction.DOWN;}*/
 		if (x == cx-1) { return Direction.LEFT;}
 		else if (x == cx+1) { return Direction.RIGHT;}
 		else if (y == cy+1) { return Direction.UP;}
 		else {return Direction.DOWN;}
-		//System.out.println("**********decideDir ends**********");
 	}
 
 	public Action decideTurnAction(Direction anotherCellDir)
@@ -1537,14 +1399,12 @@ public class MyAI extends Agent
 			if (this.matrix.get(x).get(y).visited == true) {return true;}
 			else {return false;}
 		}
-		//if (this.currentDir == Direction.DOWN)
 		else
 		{
 			int x = this.current.x+1;
 			int y = this.current.y;
 			if (this.matrix.get(x).get(y).visited == true) {return true;}
 			else {return false;}
-			//return false;
 		}
 	}
 
@@ -1561,13 +1421,10 @@ public class MyAI extends Agent
 		{
 			int w = around.get(i).x;
 			int l = around.get(i).y;
-			//System.out.println(w+" "+l);
-			//System.out.println(this.matrix.get(w).get(l).status);
 			if (this.isSafe(w,l) && this.matrix.get(w).get(l).visited == false)
 			{
 				safeCells.add(around.get(i));
 			}
-			//if (this.isSafe(around.get(i).getKey(), around.get(i).getValue())) {safeCells.add(around.get(i));}
 		}
 		return safeCells;
 	}
@@ -1580,13 +1437,10 @@ public class MyAI extends Agent
 		{
 			int w = around.get(i).x;
 			int l = around.get(i).y;
-			//System.out.println(w+" "+l);
-			//System.out.println(this.matrix.get(w).get(l).status);
 			if (this.isSafe(w,l))
 			{
 				safeCells.add(around.get(i));
 			}
-			//if (this.isSafe(around.get(i).getKey(), around.get(i).getValue())) {safeCells.add(around.get(i));}
 		}
 		return safeCells.get(0);
 	}
@@ -1598,11 +1452,10 @@ public class MyAI extends Agent
 		{
 			int w = around.get(i).x;
 			int l = around.get(i).y;
-			if (/*this.matrix.get(w).get(l).visited == false && */w != this.prev_cell.x && l != this.prev_cell.y && this.noDanger(w, l))
+			if (w != this.prev_cell.x && l != this.prev_cell.y && this.noDanger(w, l))
 			{
 				return new Pair(w,l);
 			}
-			//if (this.isSafe(around.get(i).getKey(), around.get(i).getValue())) {safeCells.add(around.get(i));}
 		}
 		return null;
 	}
@@ -1644,20 +1497,6 @@ public class MyAI extends Agent
 		}
 		return allSafe;
 	}
-
-	/*
-	public Stack<Pair> backPath()
-	{
-		ArrayList<Pair> allSafe = this.allSafe();
-		Stack<Pair> backPath = new Stack<Pair>();
-		Pair modelCurrent = new Pair(this.current.x, this.current.y);
-		if ()
-		for (int i = 0; i<allSafe.size(); ++i)
-		{
-			
-		}
-		
-	}*/
 	
 	public class node {
 		public boolean visited;

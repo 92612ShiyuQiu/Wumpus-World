@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Wumpus_World">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Wumpus_World.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
